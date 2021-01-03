@@ -20,7 +20,7 @@ function appendToFile(data, filename) {
     fs.appendFileSync(filename, data, "utf8");
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
   }
 }
@@ -41,7 +41,7 @@ function cat(path, filename) {
     }
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
   }
 }
@@ -62,7 +62,7 @@ async function webCat(url, filename) {
     }
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
   }
 }
@@ -95,7 +95,7 @@ async function main() {
       // make outputFile empty to prepare it for appending
       fs.writeFile(outputFile, "", "utf8", err => {
         if (err) {
-          console.log(err);
+          console.error(err);
           process.exit(1);
         }
       });
@@ -121,7 +121,7 @@ async function main() {
     }
   }
   catch(err) {
-    console.log(err);
+    console.error(err);
     process.exit(1);
   }
 }

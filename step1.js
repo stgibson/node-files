@@ -7,7 +7,7 @@ const fs = require("fs");
 function cat(path) {
   fs.readFile(path, "utf8", (err, data) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       process.exit(1);
     }
     else {
@@ -21,6 +21,6 @@ try {
   cat(args[2]);
 }
 catch(e) {
-  console.log(e);
+  console.error(e);
   process.exit(1);
 }
