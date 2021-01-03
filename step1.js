@@ -1,5 +1,9 @@
 const fs = require("fs");
 
+/**
+ * Writes text from path to console
+ * @param {string} path Path of file to read from
+ */
 function cat(path) {
   fs.readFile(path, "utf8", (err, data) => {
     if (err) {

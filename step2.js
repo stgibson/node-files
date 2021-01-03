@@ -1,6 +1,10 @@
 const fs = require("fs");
 const axios = require("axios");
 
+/**
+ * Writes text from path to console
+ * @param {string} path Path of file to read from
+ */
 function cat(path) {
   fs.readFile(path, "utf8", (err, data) => {
     if (err) {
@@ -13,6 +17,10 @@ function cat(path) {
   });
 }
 
+/**
+ * Writes html from url to console
+ * @param {string} url Webpage to read from
+ */
 async function webCat(url) {
   try {
     const { data } = await axios.get(url);

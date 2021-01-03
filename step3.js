@@ -1,12 +1,20 @@
 const fs = require("fs");
 const axios = require("axios");
 
+/**
+ * Errors for when user types in wrong number of command-line arguments
+ */
 class CommandArgsError extends Error {
   constructor(message) {
     super(message);
   }
 }
 
+/**
+ * Writes data to filename
+ * @param {string} data Text to add to filename
+ * @param {string} filename Path to the file to write to
+ */
 function writeToFile(data, filename) {
   fs.writeFile(filename, data, "utf8", err => {
     if (err) {
@@ -16,6 +24,11 @@ function writeToFile(data, filename) {
   });
 }
 
+/**
+ * Writes text from path to filename, or to console if filename is undefined
+ * @param {string} path Path of file to read from
+ * @param {string} filename Path of file to write to
+ */
 function cat(path, filename) {
   fs.readFile(path, "utf8", (err, data) => {
     if (err) {
@@ -33,6 +46,11 @@ function cat(path, filename) {
   });
 }
 
+/**
+ * Writes html from url to filename, or to console if filename is undefined
+ * @param {string} url Webpage to read from
+ * @param {string} filename Path of file to write to
+ */
 async function webCat(url, filename) {
   try {
     const { data } = await axios.get(url);
@@ -49,6 +67,11 @@ async function webCat(url, filename) {
   }
 }
 
+/**
+ * Determines if link is a URL
+ * @param {string} link The string to determine if it's a URL
+ * @return True if link is a URL, false otherwise
+ */
 function isUrl(link) {
   return link.startsWith("http://") || link.startsWith("https://");
 }
