@@ -76,48 +76,54 @@ function isUrl(link) {
   return link.startsWith("http://") || link.startsWith("https://");
 }
 
-// determine which function to call based on command line arguments
-const args = process.argv;
-try {
-  if (args.length < 3) {
-    throw new CommandArgsError("No path to file or webpage provided");
+/**
+ * Determine which function to call based on command line arguments
+ */
+async function main() {
+  const args = process.argv;
+  try {
+    if (args.length < 3) {
+      throw new CommandArgsError("No path to file or webpage provided");
+    }
+    if (args[2] === "--out") {
+      if (args.length < 5) {
+        const message =
+          "When using --out, you must provide both the output file and at least one input file or url"
+        throw new CommandArgsError(message);
+      }
+      const [, , , outputFile, ...links] = args;
+      // make outputFile empty to prepare it for appending
+      fs.writeFile(outputFile, "", "utf8", err => {
+        if (err) {
+          console.log(err);
+          process.exit(1);
+        }
+      });
+      for (let link of links) {
+        if (isUrl(link)) {
+          await webCat(link, outputFile);
+        }
+        else {
+          cat(link, outputFile);
+        }
+      }
+    }
+    else {
+      const [, , ...links] = args;
+      for (let link of links) {
+        if (isUrl(link)) {
+          webCat(link);
+        }
+        else {
+          cat(link);
+        }
+      }
+    }
   }
-  if (args[2] === "--out") {
-    if (args.length < 5) {
-      const message =
-        "When using --out, you must provide both the output file and at least one input file or url"
-      throw new CommandArgsError(message);
-    }
-    const [, , , outputFile, ...links] = args;
-    // make outputFile empty to prepare it for appending
-    fs.writeFile(outputFile, "", "utf8", err => {
-      if (err) {
-        console.log(err);
-        process.exit(1);
-      }
-    });
-    for (let link of links) {
-      if (isUrl(link)) {
-        webCat(link, outputFile);
-      }
-      else {
-        cat(link, outputFile);
-      }
-    }
-  }
-  else {
-    const [, , ...links] = args;
-    for (let link of links) {
-      if (isUrl(link)) {
-        webCat(link);
-      }
-      else {
-        cat(link);
-      }
-    }
+  catch(err) {
+    console.log(err);
+    process.exit(1);
   }
 }
-catch(err) {
-  console.log(err);
-  process.exit(1);
-}
+
+main();
